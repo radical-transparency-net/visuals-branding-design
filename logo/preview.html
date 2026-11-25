@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radical Transparency — Official Lace Logo Workbench (v1.0)</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <style>
+    :root {
+      --bg: #f8f9ff;
+      --surface: #ffffff;
+      --ink: #0b1c30;
+      --muted: #45464d;
+      --border: #d3e4fe;
+      --accent: #0051d5;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+    }
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    header {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 {
+      margin: 0 0 0.35rem 0;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+      max-width: 78ch;
+    }
+
+    /* Interactive Control Bar */
+    .controls {
+      position: sticky;
+      top: 0.75rem;
+      z-index: 20;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.5rem;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 6px 24px rgba(11, 28, 48, 0.06);
+    }
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .control-group label {
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+    input[type="range"] {
+      width: 240px;
+      accent-color: var(--accent);
+    }
+    .badge {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: #eff4ff;
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
+    .bg-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .bg-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 0.3rem 0.65rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .bg-btn.active {
+      background: var(--ink);
+      color: #ffffff;
+      border-color: var(--ink);
+    }
+
+    .live-stage-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      min-height: 370px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      transition: background-color 0.2s ease;
+    }
+    .live-stage-head {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+    .live-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 1rem 0;
+    }
+    .live-stage img { display: block; }
+
+    .surf-white { background: #ffffff; color: #0b1c30; }
+    .surf-tint { background: #eff4ff; color: #0b1c30; }
+    .surf-grid {
+      background-color: #f8f9ff;
+      background-image: radial-gradient(#b4c5ff 1px, transparent 1px);
+      background-size: 12px 12px;
+      color: #0b1c30;
+    }
+    .surf-navy { background: #0b1c30; color: #eaf1ff; border-color: #0b1c30; }
+    .surf-black { background: #000000; color: #ffffff; border-color: #000000; }
+
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.6rem;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+    .section-desc {
+      margin: 0 0 1.15rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      max-width: 88ch;
+    }
+    .strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 1.85rem;
+      padding: 1.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 0.85rem;
+    }
+    .strip.light { background: #ffffff; }
+    .strip.dark {
+      background: #0b1c30;
+      color: #eaf1ff;
+      border-color: #0b1c30;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .swatch img { display: block; }
+    .swatch-label {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.72rem;
+      opacity: 0.85;
+      text-align: center;
+    }
+    .touch-icon {
+      border-radius: 36px;
+      box-shadow: 0 4px 14px rgba(11, 28, 48, 0.14);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Radical Transparency — Official Lace Logo (v1.0)</h1>
+      <p class="subtitle">
+        Canonical <em>Brugse Schelprand</em> monogram: 8 scalloped Bruges tape-lace arches, wall-to-wall 60° Flemish <em>tullegrond</em> mesh with flush dual anchoring, and 4 internal <code>@media</code> Level-of-Detail layers.
+      </p>
+    </header>
+
+    <div class="controls">
+      <div class="control-group">
+        <label for="sizeSlider">Live Scale Tester:</label>
+        <input id="sizeSlider" type="range" min="16" max="320" value="256" />
+        <span id="sizeReadout" class="badge">256px · LOD: XL</span>
+      </div>
+      <div class="control-group">
+        <label>Surface:</label>
+        <div class="bg-buttons" id="bgButtons">
+          <button class="bg-btn active" data-surf="surf-white" data-inv="0">White</button>
+          <button class="bg-btn" data-surf="surf-tint" data-inv="0">RT Light (#eff4ff)</button>
+          <button class="bg-btn" data-surf="surf-grid" data-inv="0">Transparency Grid</button>
+          <button class="bg-btn" data-surf="surf-navy" data-inv="1">RT Navy (#0b1c30)</button>
+          <button class="bg-btn" data-surf="surf-black" data-inv="1">Black (#000000)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="live-stage-card surf-white" id="liveCard">
+      <div class="live-stage-head">
+        <span>Interactive Responsive SVG Preview</span>
+        <span id="liveFileLabel" class="swatch-label">rt-logo.svg</span>
+      </div>
+      <div class="live-stage">
+        <img id="liveImg" src="rt-logo.svg" width="256" height="256" alt="Live logo preview" />
+      </div>
+      <span class="swatch-label">Resize slider tests browser @media evaluation inside &lt;img&gt;</span>
+    </div>
+
+    <!-- Responsive SVG Masters -->
+    <section class="section-card">
+      <div class="section-head">
+        <h2>1. Master Responsive SVGs</h2>
+        <span class="badge">rt-logo.svg &amp; rt-logo-inverse.svg</span>
+      </div>
+      <p class="section-desc">
+        Single-file responsive SVGs embedding 4 optical detail tiers (<code>&gt;160px</code> XL, <code>&le;160px</code> M, <code>&le;72px</code> S, <code>&le;34px</code> XS). Notice that the inverse master uses genuine <code>#ffffff</code> ink and <code>&lt;mask&gt;</code> transparency without CSS filter tricks.
+      </p>
+      <div class="strip light">
+        <div class="swatch"><img src="rt-logo.svg" width="256" height="256" alt="256px XL" /><span class="swatch-label">256px (XL)</span></div>
+        <div class="swatch"><img src="rt-logo.svg" width="128" height="128" alt="128px M" /><span class="swatch-label">128px (M)</span></div>
+        <div class="swatch"><img src="rt-logo.svg" width="64" height="64" alt="64px S" /><span class="swatch-label">64px (S)</span></div>
+        <div class="swatch"><img src="rt-logo.svg" width="32" height="32" alt="32px XS" /><span class="swatch-label">32px (XS)</span></div>
+        <div class="swatch"><img src="rt-logo.svg" width="16" height="16" alt="16px XS" /><span class="swatch-label">16px (Favicon)</span></div>
+      </div>
+      <div class="strip dark">
+        <div class="swatch"><img src="rt-logo-inverse.svg" width="256" height="256" alt="256px XL inv" /><span class="swatch-label">256px inverse</span></div>
+        <div class="swatch"><img src="rt-logo-inverse.svg" width="128" height="128" alt="128px M inv" /><span class="swatch-label">128px inverse</span></div>
+        <div class="swatch"><img src="rt-logo-inverse.svg" width="64" height="64" alt="64px S inv" /><span class="swatch-label">64px inverse</span></div>
+        <div class="swatch"><img src="rt-logo-inverse.svg" width="32" height="32" alt="32px XS inv" /><span class="swatch-label">32px inverse</span></div>
+        <div class="swatch"><img src="rt-logo-inverse.svg" width="16" height="16" alt="16px XS inv" /><span class="swatch-label">16px inverse</span></div>
+      </div>
+    </section>
+
+    <!-- Static Raster PNGs & Touch Icon -->
+    <section class="section-card">
+      <div class="section-head">
+        <h2>2. LOD-Matched Static PNGs &amp; Platform Icons</h2>
+        <span class="badge">png/ &amp; apple-touch-icon.png</span>
+      </div>
+      <p class="section-desc">
+        Each PNG export is rasterized from its matching fixed-LOD static SVG (<code>xl</code>&rarr;256px+, <code>m</code>&rarr;128px, <code>s</code>&rarr;64px, <code>xs</code>&rarr;32px/16px) so static bitmap consumers receive the exact intended optical weight.
+      </p>
+      <div class="strip light">
+        <div class="swatch"><img src="png/rt-logo-256.png" width="256" height="256" alt="PNG 256" /><span class="swatch-label">rt-logo-256.png</span></div>
+        <div class="swatch"><img src="png/rt-logo-128.png" width="128" height="128" alt="PNG 128" /><span class="swatch-label">rt-logo-128.png</span></div>
+        <div class="swatch"><img src="png/rt-logo-64.png" width="64" height="64" alt="PNG 64" /><span class="swatch-label">rt-logo-64.png</span></div>
+        <div class="swatch"><img src="png/rt-logo-32.png" width="32" height="32" alt="PNG 32" /><span class="swatch-label">rt-logo-32.png</span></div>
+        <div class="swatch"><img src="png/rt-logo-16.png" width="16" height="16" alt="PNG 16" /><span class="swatch-label">rt-logo-16.png</span></div>
+        <div class="swatch"><img class="touch-icon" src="apple-touch-icon.png" width="90" height="90" alt="Apple Touch Icon" /><span class="swatch-label">apple-touch-icon.png (180px)</span></div>
+      </div>
+      <div class="strip dark">
+        <div class="swatch"><img src="png/rt-logo-256-inverse.png" width="256" height="256" alt="PNG 256 inv" /><span class="swatch-label">256-inverse.png</span></div>
+        <div class="swatch"><img src="png/rt-logo-128-inverse.png" width="128" height="128" alt="PNG 128 inv" /><span class="swatch-label">128-inverse.png</span></div>
+        <div class="swatch"><img src="png/rt-logo-64-inverse.png" width="64" height="64" alt="PNG 64 inv" /><span class="swatch-label">64-inverse.png</span></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const slider = document.getElementById("sizeSlider");
+    const readout = document.getElementById("sizeReadout");
+    const liveImg = document.getElementById("liveImg");
+    const liveCard = document.getElementById("liveCard");
+    const liveFileLabel = document.getElementById("liveFileLabel");
+    const bgButtons = document.querySelectorAll(".bg-btn");
+
+    function getLodLabel(px) {
+      if (px <= 34) return "XS (Favicon)";
+      if (px <= 72) return "S (Icon)";
+      if (px <= 160) return "M (Header)";
+      return "XL (Hero)";
+    }
+
+    slider.addEventListener("input", () => {
+      const val = Number(slider.value);
+      readout.textContent = `${val}px · LOD: ${getLodLabel(val)}`;
+      liveImg.width = val;
+      liveImg.height = val;
+      liveImg.style.width = `${val}px`;
+      liveImg.style.height = `${val}px`;
+    });
+
+    bgButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        bgButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const surf = btn.dataset.surf;
+        const inv = btn.dataset.inv === "1";
+        liveCard.className = `live-stage-card ${surf}`;
+        liveImg.src = inv ? "rt-logo-inverse.svg" : "rt-logo.svg";
+        liveFileLabel.textContent = inv ? "rt-logo-inverse.svg" : "rt-logo.svg";
+      });
+    });
+  </script>
+</body>
+</html>

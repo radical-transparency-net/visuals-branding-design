@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radical Transparency — Slideware Visual Assets Workbench</title>
+  <link rel="icon" type="image/svg+xml" href="../logo/favicon.svg" />
+  <style>
+    :root {
+      --bg: #f8f9ff;
+      --surface: #ffffff;
+      --ink: #0b1c30;
+      --muted: #45464d;
+      --border: #d3e4fe;
+      --accent: #0051d5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: 1220px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 0 0 0.35rem 0;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+      max-width: 82ch;
+    }
+
+    .controls {
+      position: sticky;
+      top: 0.75rem;
+      z-index: 20;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.4rem;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 6px 24px rgba(11, 28, 48, 0.06);
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .control-group label {
+      font-weight: 600;
+      font-size: 0.86rem;
+    }
+
+    input[type="range"] {
+      width: 190px;
+      accent-color: var(--accent);
+    }
+
+    .badge {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: #eff4ff;
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
+
+    .bg-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .bg-btn,
+    .toggle-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 0.3rem 0.65rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .bg-btn.active,
+    .toggle-btn.active {
+      background: var(--ink);
+      color: #ffffff;
+      border-color: var(--ink);
+    }
+
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .section-desc {
+      margin: 0 0 1.15rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      max-width: 92ch;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .stage-box {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .stage-box.light {
+      background: #ffffff;
+      color: #0b1c30;
+    }
+
+    .stage-box.tint {
+      background: #eff4ff;
+      color: #0b1c30;
+    }
+
+    .stage-box.navy {
+      background: #0b1c30;
+      color: #eaf1ff;
+      border-color: #0b1c30;
+    }
+
+    .stage-box.black {
+      background: #000000;
+      color: #ffffff;
+      border-color: #000000;
+    }
+
+    .stage-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.75rem;
+      opacity: 0.85;
+    }
+
+    .slide-16x9 {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(128, 128, 128, 0.25);
+    }
+
+    .slide-16x9 img.bg-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .tiled-mosaic {
+      background-repeat: repeat;
+      background-size: 50% 50%;
+    }
+
+    .seam-guides {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: none;
+    }
+
+    .seam-guides.visible {
+      display: block;
+    }
+
+    .seam-guides::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      border-left: 1.5px dashed #ff3b30;
+    }
+
+    .seam-guides::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      border-top: 1.5px dashed #ff3b30;
+    }
+
+    .drape-corner-tr {
+      position: absolute;
+      top: -18%;
+      right: -10%;
+      width: 40%;
+      aspect-ratio: 1 / 1;
+      opacity: 0.16;
+      pointer-events: none;
+    }
+
+    .drape-corner-bl {
+      position: absolute;
+      bottom: -22%;
+      left: -8%;
+      width: 36%;
+      aspect-ratio: 1 / 1;
+      opacity: 0.14;
+      pointer-events: none;
+    }
+
+    .slide-content-demo {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8% 10%;
+    }
+
+    .slide-content-demo h3 {
+      margin: 0 0 0.4rem 0;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .slide-content-demo p {
+      margin: 0;
+      font-size: 0.85rem;
+      opacity: 0.82;
+      max-width: 44ch;
+    }
+
+    .asset-frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+    }
+
+    .asset-frame img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Radical Transparency — Slideware Visual Assets</h1>
+      <p class="subtitle">
+        Monochrome transparent slideware suite generated procedurally from <code>lace_core.py</code>: seamless 16:9
+        endless hex-mesh + spiders, blank lace medallion for corner/edge draping, and stacked
+        <code>RADICAL TRANSPARENCY</code> wordmarks.
+      </p>
+    </header>
+
+    <div class="controls">
+      <div class="control-group">
+        <label>Active Theme:</label>
+        <div class="bg-buttons" id="bgButtons">
+          <button class="bg-btn active" data-surf="light" data-inv="0">White</button>
+          <button class="bg-btn" data-surf="tint" data-inv="0">RT Light (#eff4ff)</button>
+          <button class="bg-btn" data-surf="navy" data-inv="1">RT Navy (#0b1c30)</button>
+          <button class="bg-btn" data-surf="black" data-inv="1">Black (#000000)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="opacitySlider">Mesh Watermark Opacity:</label>
+        <input id="opacitySlider" type="range" min="5" max="100" value="18" />
+        <span id="opacityReadout" class="badge">18%</span>
+      </div>
+      <div class="control-group">
+        <button id="seamBtn" class="toggle-btn" type="button">Show 2×2 Tile Seam Guide</button>
+      </div>
+    </div>
+
+    <!-- Section 1: 16:9 Seamless Hex-Mesh Background -->
+    <section class="section-card">
+      <div class="section-head">
+        <h2>1. Seamless 16:9 Hex-Mesh + Spiders Background (1920×1080)</h2>
+        <span class="badge">rt-mesh-bg-1920x1080.svg / .png</span>
+      </div>
+      <p class="section-desc">
+        62×40 periodic pointy-top hexagonal lattice with 6-legged <em>spinnen</em>. Left/right and top/bottom edges wrap
+        seamlessly without double strokes or broken stars, verified below in both single-slide and 2×2 tiled views.
+      </p>
+      <div class="grid-2">
+        <div class="stage-box light theme-box">
+          <div class="stage-meta">
+            <span>Single 16:9 Slide Backdrop (Interactive Opacity)</span>
+            <span class="theme-file" data-light="rt-mesh-bg-1920x1080.svg"
+              data-dark="rt-mesh-bg-1920x1080-inverse.svg">rt-mesh-bg-1920x1080.svg</span>
+          </div>
+          <div class="slide-16x9">
+            <img class="bg-layer theme-img mesh-opacity" src="svg/rt-mesh-bg-1920x1080.svg"
+              data-light="svg/rt-mesh-bg-1920x1080.svg" data-dark="svg/rt-mesh-bg-1920x1080-inverse.svg"
+              alt="16:9 Seamless Hex Mesh" style="opacity: 0.18;" />
+            <div class="slide-content-demo">
+              <h3>Radical Transparency Network</h3>
+              <p>Declared, verifiable, machine-actionable semantic interoperability across open-science infrastructures.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-box light theme-box">
+          <div class="stage-meta">
+            <span>2×2 Endless Repeat-Edge Verification (4 Tiles)</span>
+            <span>62×40 periodic cell wrap</span>
+          </div>
+          <div id="tiledMosaic" class="slide-16x9 tiled-mosaic"
+            style="background-image: url('svg/rt-mesh-bg-1920x1080.svg');">
+            <div id="seamGuides" class="seam-guides"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Blank Lace Medallion -->
+    <section class="section-card">
+      <div class="section-head">
+        <h2>2. Letterless Lace Medallion (Border + Mesh + Spiders)</h2>
+        <span class="badge">rt-lace-medallion.svg / .png</span>
+      </div>
+      <p class="section-desc">
+        The canonical 8-arch <em>Brugse Schelprand</em> medallion without the central monogram—ready to crop or drape
+        across slide corners, section dividers, and frame edges.
+      </p>
+      <div class="grid-2">
+        <div class="stage-box light">
+          <div class="stage-meta"><span>Light Surface</span><span>rt-lace-medallion.svg</span></div>
+          <div class="asset-frame">
+            <img src="svg/rt-lace-medallion.svg" width="256" height="256" alt="Blank Lace Medallion Light" />
+          </div>
+        </div>
+        <div class="stage-box navy">
+          <div class="stage-meta"><span>Dark Surface (-inverse)</span><span>rt-lace-medallion-inverse.svg</span></div>
+          <div class="asset-frame">
+            <img src="svg/rt-lace-medallion-inverse.svg" width="256" height="256" alt="Blank Lace Medallion Inverse" />
+          </div>
+        </div>
+      </div>
+      <div class="stage-box light theme-box" style="margin-top: 1.25rem;">
+        <div class="stage-meta">
+          <span>Slide Corner-Drape Composition Mockup</span>
+          <span>Medallion draped across top-right &amp; bottom-left slide edges</span>
+        </div>
+        <div class="slide-16x9">
+          <img class="drape-corner-tr theme-img" src="svg/rt-lace-medallion.svg" data-light="svg/rt-lace-medallion.svg"
+            data-dark="svg/rt-lace-medallion-inverse.svg" alt="Top-right corner drape" />
+          <img class="drape-corner-bl theme-img" src="svg/rt-lace-medallion.svg" data-light="svg/rt-lace-medallion.svg"
+            data-dark="svg/rt-lace-medallion-inverse.svg" alt="Bottom-left corner drape" />
+          <div class="slide-content-demo">
+            <h3>Corner-Draped Slide Layout</h3>
+            <p>The letterless medallion anchors visual rhythm at slide boundaries without competing with foreground
+              typography or diagrams.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Extended Lace Cartouche -->
+    <section class="section-card">
+      <div class="section-head">
+        <h2>3. Extended Lace Cartouche (RADICAL / TRANSPARENCY)</h2>
+        <span class="badge">rt-wordmark-cartouche.svg / .png</span>
+      </div>
+      <p class="section-desc">
+        24-arch scalloped Bruges tape-lace frame surrounding stacked, centered <code>RADICAL</code> /
+        <code>TRANSPARENCY</code> in the hex-grid lace font (3×5 hex cells, 1-hex inter-letter lattice columns, 2-hex
+        central band) with genuine <code>&lt;mask&gt;</code> cloth-stitch (<em>linnenslag</em>) perforations.
+      </p>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="stage-box light">
+            <div class="stage-meta"><span>Light Surface</span><span>rt-wordmark-cartouche.svg</span></div>
+            <div class="asset-frame">
+              <img src="svg/rt-wordmark-cartouche.svg" alt="Extended Lace Cartouche Light" />
+            </div>
+          </div>
+          <div class="stage-box navy">
+            <div class="stage-meta"><span>Dark Surface (-inverse)</span><span>rt-wordmark-cartouche-inverse.svg</span>
+            </div>
+            <div class="asset-frame">
+              <img src="svg/rt-wordmark-cartouche-inverse.svg" alt="Extended Lace Cartouche Inverse" />
+            </div>
+          </div>
+        </div>
+    </section>
+  </div>
+
+  <script>
+    const bgButtons = document.querySelectorAll(".bg-btn");
+    const themeBoxes = document.querySelectorAll(".theme-box");
+    const themeImgs = document.querySelectorAll(".theme-img");
+    const themeFiles = document.querySelectorAll(".theme-file");
+    const tiledMosaic = document.getElementById("tiledMosaic");
+    const opacitySlider = document.getElementById("opacitySlider");
+    const opacityReadout = document.getElementById("opacityReadout");
+    const meshLayers = document.querySelectorAll(".mesh-opacity");
+    const seamBtn = document.getElementById("seamBtn");
+    const seamGuides = document.getElementById("seamGuides");
+
+    bgButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        bgButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const surf = btn.dataset.surf;
+        const inv = btn.dataset.inv === "1";
+
+        themeBoxes.forEach((box) => {
+          box.className = `stage-box ${surf} theme-box`;
+        });
+        themeImgs.forEach((img) => {
+          img.src = inv ? img.dataset.dark : img.dataset.light;
+        });
+        themeFiles.forEach((el) => {
+          el.textContent = inv ? el.dataset.dark : el.dataset.light;
+        });
+        tiledMosaic.style.backgroundImage = inv
+          ? "url('svg/rt-mesh-bg-1920x1080-inverse.svg')"
+          : "url('svg/rt-mesh-bg-1920x1080.svg')";
+      });
+    });
+
+    opacitySlider.addEventListener("input", () => {
+      const pct = Number(opacitySlider.value);
+      opacityReadout.textContent = `${pct}%`;
+      meshLayers.forEach((el) => {
+        el.style.opacity = String(pct / 100);
+      });
+    });
+
+    seamBtn.addEventListener("click", () => {
+      seamBtn.classList.toggle("active");
+      seamGuides.classList.toggle("visible");
+    });
+  </script>
+</body>
+
+</html>
